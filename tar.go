@@ -153,6 +153,11 @@ func tarFile(tarWriter *tar.Writer, source, dest string) error {
 			// our new tar file is inside the directory being archived; skip it
 			return nil
 		}
+		
+		// This is a git specific header, we can safely ignore it
+		if header.Name == "pax_global_header" {
+			return nil
+		}
 
 		if info.IsDir() {
 			header.Name += "/"
